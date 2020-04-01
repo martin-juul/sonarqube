@@ -4,10 +4,8 @@
 # 7.9.3 required jdk 11
 FROM openjdk:11
 
-ARG SONAR_VERSION=7.9.3
-ARG GOSU_VERISON=1.10
-
-ENV SONARQUBE_HOME=/opt/sonarqube \
+ENV SONAR_VERSION=7.9.3 \
+    SONARQUBE_HOME=/opt/sonarqube \
     # Database configuration
     # Defaults to using H2
     SONARQUBE_JDBC_USERNAME=sonar \
@@ -25,8 +23,8 @@ RUN set -xe \
 
 # grab gosu for easy step-down from root
 RUN set -x \
-    && wget -O /usr/local/bin/gosu "https://github.com/tianon/gosu/releases/download/${GOSU_VERSION}/gosu-$(dpkg --print-architecture)" \
-    && wget -O /usr/local/bin/gosu.asc "https://github.com/tianon/gosu/releases/download/${GOSU_VERSION}/gosu-$(dpkg --print-architecture).asc" \
+    && wget -O /usr/local/bin/gosu "https://github.com/tianon/gosu/releases/download/1.10/gosu-$(dpkg --print-architecture)" \
+    && wget -O /usr/local/bin/gosu.asc "https://github.com/tianon/gosu/releases/download/1.10/gosu-$(dpkg --print-architecture).asc" \
     && export GNUPGHOME="$(mktemp -d)" \
     && gpg --keyserver keyserver.ubuntu.com --recv-keys 0x036a9c25bf357dd4 \
     && gpg --batch --verify /usr/local/bin/gosu.asc /usr/local/bin/gosu \
