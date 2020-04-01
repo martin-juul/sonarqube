@@ -1,0 +1,29 @@
+version: "3"
+
+services:
+  sonarqube:
+    image: martin-juul/sonarqube:7.9.3-developer
+    stop_grace_period: "3600s"
+    networks:
+      - sonarnet
+      - plexguide
+    environment:
+      SONAR_JDBC_USERNAME: sonar
+      SONAR_JDBC_PASSWORD: sonar
+    volumes:
+      - ./volumes/data:/opt/sonarqube/data
+      - ./volumes/extensions:/opt/sonarqube/extensions
+      - ./volumes/logs:/opt/sonarqube/logs
+      - ./volumes/temp:/opt/sonarqube/temp
+    labels:
+      - traefik.enable=true
+      - traefik.frontend.headers.SSLHost=cptbarbossa.xyz
+      - traefik.frontend.headers.SSLRedirect=true
+      - traefik.frontend.headers.customResponseHeaders=X-Robots-Tag:noindex,nofollow,nosnippet,noarchive,notranslate,noimageindex
+      - traefik.frontend.rule=Host:sonarqube.cptbarbossa.xyz,sonarqube.cptbarbossa.xyz
+      - traefik.port=9000
+      - traefik.docker.network=plexguide
+
+networks:
+  sonarnet:
+    driver: bridge
